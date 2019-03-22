@@ -81,18 +81,17 @@ class Index extends ApiWrap
         if(config('app_status') != 'release'){
             $this->ajaxError("not release api.");
         }
-        $secret = 'yyzs-chinese-secret-key';
-        $cacheKey = input('cache_key','');//$cacheKey = \app\common\tool\RedisKey::YYZS_STRING_ACCESS_TOKEN . $source;
+        $secret = 'joker-official-account-key';
         $secretKey = input('secret_key','');
-        if (empty($cacheKey) || empty($secretKey)){
-            $this->ajaxError("cache key || secret key empty.");
+        if (empty($secretKey)){
+            $this->ajaxError("secret key empty.");
         }
         if ($secretKey != $secret){
             $this->ajaxError("secret key failed.");
         }
 
-        $accessToken = \think\Cache::get($cacheKey);
-        
+        $WxOfficialAccountService = new \app\common\service\WxOfficialAccountService();
+        $accessToken = $WxOfficialAccountService->getWeChatAccessToken();
         if ($accessToken){
             $this->ajaxSuccess([
                 'access_token' =>$accessToken

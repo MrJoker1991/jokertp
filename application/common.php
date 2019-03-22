@@ -295,7 +295,7 @@ function debug_log($data, $force = false, $fileName = "")
     }
 
     if ($fileName == '') {
-        $fileName = "/tmp/yyzs_test.log";
+        $fileName = "/tmp/joker.log";
     }
 
     if ($debug || $force) {

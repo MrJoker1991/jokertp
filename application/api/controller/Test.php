@@ -71,4 +71,10 @@ class Test extends ApiWrap
         dump($res);
     }
 
+    public function getOfficialAccountAccessToken(){
+        $WxOfficialAccountService = new \app\common\service\WxOfficialAccountService();
+        $accessToken = $WxOfficialAccountService->getWeChatAccessToken();
+        error_log("token = ".print_r($accessToken,1)."\n",3,'/tmp/joker.log');
+    }
+
 }

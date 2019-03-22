@@ -1,0 +1,204 @@
+/*public
+后台-功能管理： 热门城市  轮播管理  文章管理 的CSS文件
+*/
+
+.none{
+    display: none;
+}
+.lay-admin .layui-layer-title{
+    text-align: center;
+    padding: 0;
+    font-size: 16px;
+}
+.lay-admin .layui-layer-btn{
+    text-align: center;
+}
+.page-header button{
+    padding: 8px 12px;
+    background-color: #00a0e9;
+    border-radius:4px;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+ul{
+    list-style: none;
+}
+.btn-blue{
+    padding: 4px 8px;
+    background-color: #00a2d4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+}
+input[type = radio]{
+    cursor: pointer;
+}
+
+/*
+选择城市弹窗
+设置跳转链接弹窗
+较小的layer弹窗
+*/
+.layer-small-box{
+    width: 600px;
+    min-height: 380px;
+    padding: 10px 35px;
+}
+.layer-set-link>div{
+    font-size: 14px;
+    margin: 15px 0;
+}
+.layer-set-link .select-div select{
+    margin-top: 12px;
+}
+.layer-set-link .val-div input{
+    margin-top: 10px;
+    width: 100%;
+}
+.layer-set-link .text-div{
+    color: grey;
+}
+.layer-set-city>div{
+    font-size: 14px;
+    margin: 15px 0;
+}
+
+
+
+
+
+
+
+
+
+/*上传裁剪图片*/
+.layer-box{
+    width: 700px;
+    height: 420px;
+    overflow-y: scroll;
+    border-bottom: 1px solid #dedede;
+}
+.j-imgbox{
+    width: 100%;
+    height: 100%;
+    border-bottom: 1px solid #dedede;
+    overflow: hidden;
+}
+.j-imgbox>img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/*内部公用结构*/
+.img-box{
+    height: 200px;
+}
+.img-box span{
+    vertical-align: top;
+    display: inline-block;
+}
+.img-box2{
+    width: 341px;
+    height: 100%;
+    position: relative;
+    display: inline-block;
+}
+.img-box img{
+    height: 100%;
+    width: 100%;
+}
+.upload_btn_box{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(3,3,3,.5);
+
+}
+.upload_btn{
+    color: white;
+    background-color: #00a0e9;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+
+}
+.img-box2:hover > .upload_btn_box{
+    display: flex;
+}
+.status-box label{
+    margin-right: 15px;
+    cursor: pointer;
+}
+.title-box>input{
+    width: 80%;
+    height: 30px;
+}
+
+/*新增热门城市*/
+.lay-city{
+    width: 700px;
+    min-height: 300px;
+    border-bottom: 1px solid #dedede;
+}
+.lay-city>div{
+    margin: 25px 0;
+    padding-left: 50px;
+    font-size: 16px;
+}
+
+
+/*新增轮播图*/
+.layer-box>div>span:nth-of-type(1){
+    display: inline-block;
+    width: 88px;
+    text-align: right;
+}
+.lay-banner>div{
+    margin: 25px 0;
+    padding-left: 50px;
+    font-size: 16px;
+}
+.lay-banner .set-link input{
+    width:410px;
+}
+.choose-city-box{
+    border: 1px dashed #dedede;
+    padding: 15px 0 0 15px;
+    border-radius: 5px;
+    width: 466px;
+    margin-left: 88px;
+    margin-top: 15px;
+}
+.choose-city-box li{
+    display: inline-block;
+    padding: 3px 15px;
+    border: 1px solid grey;
+    font-size: 14px;
+    margin: 0px 10px 10px 0;
+    position: relative;
+}
+.choose-city-box ul li .delete{
+    width: 100%;
+    height: 100%;
+    background-color: #00a2d4;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    line-height: 28px;
+    display: none;
+    cursor: pointer;
+}
+.choose-city-box ul li:hover > .delete{
+    display: block;
+}

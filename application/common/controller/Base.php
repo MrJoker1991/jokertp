@@ -4,10 +4,20 @@ namespace app\common\controller;
 
 class Base extends \think\Controller
 {
+
+    /**
+     * 成功
+     */
+    const RETURN_CODE_SUCCESS = 1;
+
+    /**
+     * 失败
+     */
+    const RETURN_CODE_ERROR = -1;
+
     public function __construct(\think\Request $request = null) {
         parent::__construct($request);
     }
-
 
     /**
      * 将输入中的敏感字符替换为安全字符
@@ -58,5 +68,45 @@ class Base extends \think\Controller
     //     }
     //     return true;
     // }
+
+    /**
+     * ajax请求成功输出
+     *
+     * @param array|object $data 下发数据 默认\stdClass
+     * @param string $msg 返回文本信息
+     * @param int $code 状态码 1成功 -1 失败
+     */
+    protected function ajaxSuccess($data = [], $msg = 'ok', $code = self::RETURN_CODE_SUCCESS)
+    {
+        $returnArray = array("status" => $code, "code" => $code, "msg" => $msg);
+        if (!empty($data)) {
+            $returnArray['data'] = $data;
+        }
+        $this->ajaxReturn($returnArray);
+    }
+
+    /**
+     * @param string $msg
+     * @param array $data
+     * @param int $code
+     */
+    protected function ajaxError($msg = '', $data = [], $code = self::RETURN_CODE_ERROR)
+    {
+        $returnArray = array("status" => $code, "code" => $code, "msg" => $msg);
+        if (!empty($data)) {
+            $returnArray['data'] = $data;
+        }
+        $this->ajaxReturn($returnArray);
+    }
+
+    /**
+     * Ajax方式返回数据到客户端
+     * @param $data
+     */
+    protected function ajaxReturn($data)
+    {
+//        header('Content-Type:application/json; charset=utf-8');
+        exit(json_encode($data));
+    }
 
 }

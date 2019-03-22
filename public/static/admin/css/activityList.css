@@ -1,0 +1,179 @@
+*{
+    padding:0;
+    margin:0;
+    border:0;
+    box-sizing: border-box;
+}
+.layer_tag_box{
+    width: 700px;
+    padding: 0 20px;
+}
+body .lay-tag .layui-layer-title{
+    padding: 0 30px;
+    text-align: center;
+}
+body .lay-tag .layui-layer-btn{
+    text-align: center;
+}
+.lay-tag ul{
+    list-style: none;
+    margin: 0;
+}
+.lay-tag .a_tags ul li{
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px dashed #dee4ea;
+    border-radius: 3px;
+    margin-right: 13px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.layer_tag_box .title{
+    margin: 10px 0;
+}
+.choose_tag_box{
+    padding: 10px 20px;
+    border: 1px solid goldenrod;
+}
+.choose_tag_box .tag_name{
+    width:100%;
+    padding: 6px 0;
+    background-color: #00a2d4;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.choose_tag_box li{
+    display: inline-block;
+    width: 105px;
+    margin-right: 15px;
+}
+.choose_tag_box .tag_detail{
+    border: 1px solid #DEDEDE;
+    position: relative;
+    height: 260px;
+    border-radius: 5px;
+    text-align: center;
+    padding-top: 5px;
+}
+.tag_detail_2>span{
+    display: inline-block;
+    width: 90%;
+    text-align: center;
+    margin: 5px auto;
+    border: 1px dashed darkgrey;
+    padding: 3px 0;
+}
+.tag_detail>select{
+    position: absolute;
+    width: 90%;
+    left:5%;
+    bottom: 5px;
+}
+.layer_tag_btns button{
+    /*border: 1px solid #DEDEDE;*/
+    padding: 4px 12px;
+    background-color: #f66926;
+    color: white;
+}
+
+
+/*右侧标签编辑*/
+.edit-tags{
+    width: 600px;
+    padding: 0 20px;
+    height: 500px;
+    /*position: fixed;*/
+    /*right:0%;*/
+    /*top: 12%;*/
+}
+.diy-tags-box button{
+    padding: 4px 12px;
+    background-color: #f66926;
+    color: white;
+}
+.edit-tags section{
+    font-size: 14px;
+}
+.tags-flex-box{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+.tags-flex-box>div{
+    width: 18%;
+    margin-right: 20px;
+
+}
+.random-tags-box{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.diy-tags-box>input{
+    width: 130px;
+}
+.edit-wrap>section>b{
+    margin: 15px 0;
+    display: block;
+}
+.tag-item-name{
+    text-align: center;
+    width: 100%;
+    height: 26px;
+    background-image: url("/Public/image/hdjadmin/label-orange.png");
+    background-size: 100% 100%;
+    line-height: 26px;
+    font-size: 12px;
+    cursor: default;
+}
+.tag-delete{
+    font-size: 16px;
+}
+.tag-type-box{
+    border: 1px dotted #dedede;
+    border-radius: 5px;
+    width: 100%;
+    min-height: 205px;
+    text-align: center;
+    position: relative;
+    background-color: snow;
+    margin: 10px 0;
+    padding: 10px 5px;
+    position: relative;
+}
+.tag-type-item{
+    border: 1px dashed #f66926;
+    padding: 5px 3px;
+    font-size: 12px;
+    border-radius: 4px;
+    position: relative;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.tag-type-select{
+    font-size: 12px;
+    height: 25px;
+    text-align: center;
+    position: absolute;
+    bottom: 6px;
+    left: 5%;
+    border: 1px solid grey;
+    width: 90%;
+}
+.random-tag{
+    line-height: 24px;
+    font-size: 12px;
+    cursor: default;
+    width: 18%;
+    height: 26px;
+    margin-bottom: 15px;
+    margin-right: 8px;
+    border: 1px dashed #f66926;
+    border-radius: 4px;
+    text-align: center;
+}
+.random-tag-icon{
+    font-size: 16px;
+}

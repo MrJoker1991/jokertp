@@ -1,0 +1,263 @@
+<!-- import stylesheet -->
+<link rel="stylesheet" href="__ADMINSTATIC__/css/iview.css">
+<!--<link rel="stylesheet" href="/Public/css/hdjadmin/public/iview-hdj.css">-->
+<script src="__PLUGINSTATIC__/vue/vue.min2.6.7.js"></script>
+<!-- import iView -->
+<script src="__PLUGINSTATIC__/vue/iview.min.js"></script>
+<meta name="referrer" content="never">
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>
+<div class="page-content">
+    <div class="page-header">
+        <h1>专题列表</h1>
+    </div><!-- /.page-header -->
+    <div id="iviewHtml" v-cloak>
+        <!--<div class="iview-serach">
+            <div class="iview-input">
+                <span>ID名称：</span>
+                <i-input  v-model="serach.id" placeholder="ID名称" style="width: 100px" ></i-input>
+            </div>
+            <div class="iview-input">
+                <span>名称/标题：</span>
+                <i-input  v-model="serach.title" placeholder="名称/标题" style="width: 100px" ></i-input>
+            </div>
+            <div class="iview-select">
+                <span>类型：</span>
+                <i-select v-model="serach.type" multiple style="width:auto">
+                    <i-option v-for="items in typeValue" :value="items.value" :key="items.value">{{ items.label }}</i-option>
+                </i-select>
+            </div>
+            <i-button type="primary" @click="serachMsg">搜索</i-button>
+        </div>-->
+
+        <Modal v-model="visible" draggable="true" :title="title" width="700" @on-cancel="cancel">
+            <i-form style="height: 400px;overflow-y: scroll;" label-width="100">
+
+                <!--input选择图片-->
+                <div id="lay_swiper_box" class="layer-box lay-banner" style="overflow-x: hidden;position:fixed;top:-9999px;">
+                    <section style="width: 0;height: 0;opacity: 0;">
+                        <input class="upload-input" type="file" name="swiperImgInput" id="swiperImgInput" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="editItem.uploadImg(this)">
+                    </section>
+                </div>
+                <!--循环活动  列表-->
+                <div v-for="(item,index) in itemData" v-cloak style="position: relative;">
+                    <Form-item :label="'第'+(index+1)+'项'">
+                    </Form-item>
+                    <!--新增删除-->
+                    <div  v-if="item.delete" style="position: absolute;right: 20px;top: 0;margin: 0 !important;">
+                        <i-button type="warning" @click="deleteIt(index)">删除</i-button>
+                    </div>
+                    <Form-item label="名称">
+                        <i-input v-model="item.name" placeholder="标题名称" style="width: 300px" />
+                    </Form-item>
+                    <Form-item label="显示/隐藏">
+                        <Radio-group v-model="item.show">
+                            <Radio :label="1">显示</Radio>
+                            <Radio :label="0">隐藏</Radio>
+                        </Radio-group>
+                    </Form-item>
+                    <Form-item label="位置">
+                        <Input-number :max="9999" :min="0" v-model="item.order"></Input-number>
+                    </Form-item>
+                    <Form-item label="封面210*291">
+                        <div class="img-box" style='height:155px;position: relative;width: 100%;margin: 16px 0;'>
+                            <div style="width: auto;height: 100%;position: relative;display: inline-block" v-if="item.pic">
+                                <img :src="item.pic" alt="" style="height: 100%;width: auto;">
+                            </div>
+                            <div style="width: 341px;height:150px;position: relative;display: inline-block;border:1px solid #dedede;vertical-align: middle;" v-else></div>
+                            <i-button type="primary" class="abs_block" style="right: 100px;" @click="upLoadClick(index)">上传</i-button>
+                        </div>
+                    </Form-item>
+                    <Form-item label="跳转类型">
+                        <Radio-group v-model="item.type">
+                            <Radio label="page">内部页面</Radio>
+                            <Radio label="app">小程序</Radio>
+                        </Radio-group>
+                    </Form-item>
+                    <Form-item label="路径类型" v-if="item.type=='page'">
+                        <Dropdown trigger="click"  @on-click="changePathType(index,$event)">
+                            <!--内容描述-->
+                            <i-button type="primary" ghost>
+                                <span v-if="item.path_type==0">自定义路径</span>
+                                <span v-else-if="item.path_type==1">活动</span>
+                                <span v-else-if="item.path_type==2">模板</span>
+                                <Icon type="ios-arrow-down"></Icon>
+                            </i-button>
+                            <!--组件-->
+                            <Dropdown-menu slot="list">
+                                <Dropdown-item name=0>自定义路径</Dropdown-item>
+                                <Dropdown-item name=1>活动</Dropdown-item>
+                                <Dropdown-item name=2>模板</Dropdown-item>
+                            </Dropdown-menu>
+                        </Dropdown>
+                    </Form-item>
+                    <Form-item label="活动类型"  v-if="item.path_type==1||item.path_type==2">
+                        <Dropdown trigger="click"  @on-click="changePathTypeAd(index,$event)" >
+                            <i-button type="primary" ghost>
+                                <span v-if="item.atype=='vote'">投票</span>
+                                <span v-else-if="item.atype=='lottery'">抽奖</span>
+                                <span v-else-if="item.atype=='yuyue'">预约</span>
+                                <span v-else-if="item.atype=='kaijiang'">开奖</span>
+                                <Icon type="ios-arrow-down"></Icon>
+                            </i-button>
+                            <Dropdown-menu slot="list">
+                                <Dropdown-item name="vote">投票</Dropdown-item>
+                                <Dropdown-item name="lottery">抽奖</Dropdown-item>
+                                <Dropdown-item name="yuyue">预约</Dropdown-item>
+                                <Dropdown-item name="kaijiang">开奖</Dropdown-item>
+                            </Dropdown-menu>
+                        </Dropdown>
+                    </Form-item>
+                    <Form-item label="活动id" v-if="item.path_type==1">
+                        <i-input type="text" placeholder="无" v-model="item.aid"  style="width: 100px"></i-input>
+                        <i-button type="primary" style="margin-left: 50px" @click="autoPath(index)">自动获取路径</i-button>
+                        <!--<button onclick="editItem.autoPath(this)" >自动获取路径</button>-->
+                    </Form-item>
+
+                    <Form-item label="模板key" v-if="item.path_type==2">
+                        <i-input type="text" placeholder="无" v-model="item.muban_key"  style="width: 100px"></i-input>
+                        <i-button type="primary" style="margin-left: 50px;" @click="autoPath(index)">自动获取路径</i-button>
+                    </Form-item>
+                    <Form-item label="跳转路径">
+                        <i-input type="text" placeholder="无" v-model="item.path"  style="width: 450px"></i-input>
+                    </Form-item>
+                    <!--内部页面-->
+                    <Form-item label="小程序AppId" v-if="item.type=='app'">
+                        <i-input class="swiper_input" type="text" placeholder="无" v-model="item.appid"  style="width: 300px"/>
+                    </Form-item>
+                    <Form-item label="统计Key">
+                        <i-input class="swiper_input" data-type="mta_key" type="text" v-model="item.mta_key" placeholder="无" style="width: 300px"/>
+                    </Form-item>
+                    <Divider dashed />
+                </div>
+                <!--循环活动-->
+            </i-form>
+            <!--页脚-->
+            <div slot="footer">
+                <i-button type="primary" @click="saveDataApi">保存</i-button>
+                <i-button @click="modalOpenOrClose('close')">关闭</i-button>
+                <i-button type="success" style="float:left;" @click="add">新增</i-button>
+            </div>
+            <!--页脚-->
+        </Modal>
+    </div>
+    
+    <div class="row">
+        <div id="page-content-div" class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <table id="grid-table"></table>
+
+            <div id="grid-pager-footer" class='grid-pager-div'></div>
+
+            <!-- PAGE CONTENT ENDS -->
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div><!-- /.page-content -->
+
+
+<!--裁剪弹窗-->
+<!--<div class="layer-box lay-jcrop-box none" id="lay-banner-upload">
+    <div class="j-imgbox" id="jcrop-preview">
+        <img id="jcropImage" class="j-img" src="">
+    </div>
+</div>-->
+
+<script src="__ADMINSTATIC__/js/jqGrid/jquery.jqGrid.min.js"></script>
+<script src="__ADMINSTATIC__/js/jqGrid/i18n/grid.locale-zh.js"></script>
+
+<script src="__PLUGINSTATIC__/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+<link rel="stylesheet" href="__PLUGINSTATIC__/datetimepicker/jquery.datetimepicker.css">
+
+<script src="__COMMONSTATIC__/js/jqGrid.custom.js?v={$admin_version}"></script>
+<script src="__ADMINSTATIC__/js/yyzs/qiniuUpload.js?v={$admin_version}"></script>
+<script src="__ADMINSTATIC__/js/yyzs/topicNew.js?v={$admin_version}"></script>
+
+<script type="text/javascript">
+
+var myacFormatter = function (cellvalue, options, rowObject) {
+    var _edit = "<div data-id='"+ rowObject.id +"' style='cursor: pointer;' onclick='editItem.open("+rowObject.id+",\""+rowObject.title+"\");'>编辑子项</div>";
+    return _edit;
+//    var _test = '<div onclick="test();">Test</div>';
+//    return _edit+" | "+_test;
+    
+};
+
+var test = function(){
+    alert("Test");
+    return true;
+};
+    
+
+/**
+ * 与页面业务有关的配置
+ * @type type
+ */
+$.extend(jqGridCustomConfig,{
+//    selector:{
+//        page_content:"#page-content-div",
+//        table:"#grid-table",
+//        pager_footer:"#grid-pager-footer"                  
+//    },
+    url:{
+        list_url:'/admin/TestList/topicListData',
+        edit_url:'/admin/TestList/topicListOp',
+        select_url:'/admin/TestList/topicListSelect',
+    }
+});
+
+/**
+ * jqGrid 表格配置
+ * @type type
+ */
+$.extend(jqGridConfig,{
+    colNames: ['ID', '名称/标题', '小标题', '类型', '[全部]文案', '[全部]跳转路径',"[全部]统计key","位置","显示/隐藏",'创建时间','更新时间', '操作'],
+    colModel: [
+        {name: 'id', index: 'id', width: 30, sortable: true, editable: false, search: true,searchoptions:{sopt:['eq']}},
+        {name: 'title', index: 'title', width: 50, sortable: false, editable: true, editrules: {required: true}, search: true},
+        {name: 'sub_title', index: 'sub_title', width: 50, sortable: false, editable: true, search: true},
+//                {name: 'stime', index: 'stime', width: 60, sortable: true,searchoptions: {dataInit:gDatePick, attr:{title:'选择日期'}, sopt:['lt', 'le', 'gt', 'ge']}, editable: false, formatter: "date", formatoptions: {srcformat: 'u', newformat: "Y-m-d H:i:s"}},
+//                {name: 'etime', index: 'etime', width: 60, sortable: true,searchoptions: {dataInit:gDatePick, attr:{title:'选择日期'}, sopt:['lt', 'le', 'gt', 'ge']}, editable: false, formatter: "date", formatoptions: {srcformat: 'u', newformat: "Y-m-d H:i:s"}},
+        {name: 'type', index: 'type', width: 40, sortable: true, editable: true, search: true, stype: "select", searchoptions: {value: getSelectData("type")}, edittype: "select", editoptions: {value: getSelectData("type")}, formatter: "select"},
+        {name: 'more_text', index: 'more_text', width: 40, sortable: false, editable: true, search: true},
+        {name: 'more_path', index: 'more_path', width: 60, sortable: false, editable: true, editrules: {required: true}, search: true},
+        {name: 'more_mta_key', index: 'more_mta_key', width: 70, sortable: false, editable: true, search: true},
+        {name: 'order', index: 'order', width: 30, sortable: true, editable: true, search: true,searchoptions:{sopt:['eq']}},
+        {name: 'show', index: 'show', width: 40, sortable: true, editable: true, search: true, stype: "select", searchoptions: {value: getSelectData("show")}, edittype: "select", editoptions: {value: getSelectData("show")}, formatter: "select"},
+        {name: 'create_time', index: 'create_time', width: 60, sortable: true,searchoptions: {dataInit:initSearchDatetime, attr:{title:'选择日期'}, sopt:['lt', 'le', 'gt', 'ge']}, editable: false, formatter: "date", formatoptions: {srcformat: 'u', newformat: "Y-m-d H:i:s"}},
+        {name: 'update_time', index: 'update_time', width: 60, sortable: true,searchoptions: {dataInit:initSearchDatetime, attr:{title:'选择日期'}, sopt:['lt', 'le', 'gt', 'ge']}, editable: false, formatter: "date", formatoptions: {srcformat: 'u', newformat: "Y-m-d H:i:s"}},
+        {name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: true, search: false, formatter: myacFormatter}
+    ],    
+    url: jqGridCustomConfig.url.list_url,
+    editurl: jqGridCustomConfig.url.edit_url,         
+    pager: jqGridCustomConfig.selector.pager_footer,    
+    loadtext: "加载...",
+    caption: "列表",   
+});
+
+
+
+$(function(){
+    var $table = $(jqGridCustomConfig.selector.table);
+    
+    //主要配置
+    $table.jqGrid(jqGridConfig);
+
+    //导航条工具操作配置
+    $table.jqGrid('navGrid',
+        jqGridCustomConfig.selector.pager_footer,
+        navbar_options,
+        edit_options,
+        new_options,
+        delete_options,
+        search_options,
+        view_options
+    );
+
+    //开启头部工具导航条
+    enableGridHeaderPager(jqGridCustomConfig.selector.pager_footer);
+});
+
+</script>

@@ -1,0 +1,60 @@
+<style>
+    .center .row a span{
+        margin-top: 10px;
+    }
+</style>
+<div class="page-content">
+    <!--        <div class="page-header position-relative">
+                    <h1>欢迎首页</h1>
+            </div>-->
+
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+        <div class="well">
+            <h4 class="green smaller lighter">活动聚</h4>
+            酷主办方都在使用的活动发布管理平台
+        </div>                
+        <div class="row">
+            <!--                        <div class="col-sm-6">
+                                            <h3 class="header smaller lighter green">欢迎关注</h3>                                
+                                            <div class="dd" id="normal_nestable">
+                                                <a href="http://www.huodongju.com/" target="_blank">
+                                                  <img src="http://img.huodongju.com/sys/banner/huodongju-logo.png" alt="活动聚"/>
+                                                </a>
+                                            </div>
+                                    </div>-->
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="center">
+            <div class="row">
+                <p>
+                    <!--<a href="/tool/texttojson"><span class="btn btn-lg">文本转换JSON</span></a>-->
+                    <a href="/Activity/yyIndex" target="_blank"><span class="btn btn-lg btn-primary">活动列表（运营）</span></a>
+<!--                    <a href="/Activity/index" target="_blank"><span class="btn btn-lg btn-primary">活动列表</span></a>-->
+                    <a href="/UserActivityTicket/exportExcel" target="_blank"><span class="btn btn-lg btn-primary">导出活动票券</span></a>
+                    <a href="/Activity/auditIndex" target="_blank"><span class="btn btn-lg btn-primary">审核活动</span></a>
+                    <a href="/Studio/index" target="_blank"><span class="btn btn-lg btn-primary">发布活动</span></a>
+                    <a href="/Studio/template" target="_blank"><span class="btn btn-lg btn-primary">创建活动模板</span></a>
+                    <a href="/Tool/adminPush" target="_blank"><span class="btn btn-primary btn-lg">推送</span></a>
+                    <a id="flush_hot_city" href="javascript:void(0);"><span class="btn btn-primary btn-lg">刷新热门城市首页数据</span></a>
+                    <a href="/Tool/initiativePush" target="_blank"><span class="btn btn-primary btn-lg">活动聚公众号主动推送</span></a>
+                </p>   
+                <p>
+                    <a href="/Tool/texttojson" target="_blank"><span class="btn btn-lg btn-success">文本转换JSON</span></a>
+                    <a href="/Tool/idDispose" target="_blank"><span class="btn btn-success btn-lg">ID加解密</span></a>
+                    <a href="/Tool/uploadMaterial" target="_blank"><span class="btn btn-success btn-lg">上传图片到七牛</span></a>
+                </p>                 
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $("#flush_hot_city").on("click",function(){
+            if(confirm("确定刷新")){
+               window.open("/Recommend/refreshHotCityActivity");
+            }
+        });
+    });
+</script>

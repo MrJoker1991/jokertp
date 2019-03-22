@@ -23,4 +23,16 @@ class RedisKey
      */
     const JIE_STRING_TEST = 'jie_string_test_';
 
+    /**
+     * 公众号Access Token
+     */
+    const JIE_OFFICIAL_ACCOUNT_ACCESS_TOKEN_ = 'jie_official_account_access_token_';
+
+    /**
+     * 公众号 Ticket 
+     */
+    const JIE_OFFICIAL_ACCOUNT_ACCESS_TICKET_ = 'jie_official_account_access_ticket_';
+
+
+
 }

@@ -1,0 +1,50 @@
+/*可以在这里添加你自己的css*/
+*{
+    max-width: 100%;
+    box-sizing: border-box;
+    font-family: "microsoft yahei";
+}
+html {
+    scrollbar-arrow-color: #fff;
+    scrollbar-face-color: #b2b3b4;
+    scrollbar-3dlight-color: #b2b3b4;
+    scrollbar-highlight-color: #b2b3b4;
+    scrollbar-shadow-color: #b2b3b4;
+    scrollbar-darkshadow-color: #b2b3b4;
+    scrollbar-track-color: #fff;
+    scrollbar-base-color: #b2b3b4
+}
+
+::-webkit-scrollbar-thumb {
+    height: 50px;
+    outline-offset: -2px;
+    outline: #fff solid 2px;
+    -webkit-border-radius: 0;
+    border: 2px solid #fff;
+    background-color: transparent;
+    -webkit-border-radius: 4px
+}
+
+::-webkit-scrollbar-thumb:hover {
+    height: 50px;
+    background-color: #0B95FE;
+    -webkit-border-radius: 4px
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: #fff;
+    -webkit-border-radius: 0
+}
+p{
+    margin: 0 !important;
+}
+img{
+    max-width: 100% !important;
+    height: auto !important;
+
+}

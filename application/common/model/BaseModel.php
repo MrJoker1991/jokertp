@@ -164,7 +164,10 @@ class BaseModel extends \think\Model
     {
         try {
             $relation = $this->hasOne($model, $foreignKey, $localKey);
-            return $relation->hasWhere($where, $field)->find();
+            $res = $relation->hasWhere($where, $field)->find();
+            debug_log('1111');
+            debug_log($this->getLastSql());
+            return $res;
         } catch (\Exception $ex) {
             s_exception('db baseRelationFind ERR');
         }

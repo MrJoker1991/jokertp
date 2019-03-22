@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="referrer" content="never">
+    <title>活动聚管理系统</title>
+    <link rel="stylesheet" href="/Public/css/hdjadmin/public/iview.css">
+    <link rel="stylesheet" href="/Public/font/css/font-awesome.min.css" />
+    <style type="text/css">
+        [v-cloak] {
+            display: none;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html{
+            height:100%;
+            min-width: 100px;
+        }
+        body{
+            height: 100%;
+        }
+        Header{
+            min-height: 45px;
+            line-height: 43px;
+            background: rgb(67, 142, 185);
+        }
+        Header>span{
+            font-size: 24px;
+            color: white;
+            vertical-align: middle;
+        }
+        .userI-info{
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            padding: 0 10px;
+        }
+        .content{
+            padding: 60px 40px 0 40px;
+            position: relative;
+        }
+        .content i{
+            font-size: 15px;
+        }
+        .ivu-layout{
+            background: white;
+        }
+        .content-title{
+            color:#2679b5;
+            font-size: 18px;
+            font-weight: bold;
+            padding-bottom: 20px;
+            border-bottom: 1px dotted #e2e2e2;
+            margin-bottom: 20px;
+        }
+        .ivu-menu-light{
+            background: none;
+        }
+        .ivu-menu-vertical.ivu-menu-light:after{
+            background: none;
+        }
+        .ivu-table-tbody{
+            font-weight: bold;
+        }
+        .ivu-table-cell{
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        .ivu-table-cell>div>img{
+            width: 100% !important;
+        }
+        .ivu-menu-vertical .ivu-menu-item, .ivu-menu-vertical .ivu-menu-submenu-title{
+            padding: 8.5px 2px 8.5px 13px;
+            line-height: normal;
+        }
+        .ivu-menu{
+            font-size: 13px;
+        }
+        .ivu-menu-item{
+            font-size: 13px;
+        }
+        .ivu-breadcrumb{
+            font-size: 13px;
+        }
+        .ivu-dropdown{
+            float: right;
+        }
+        .ivu-layout-sider{
+            width: 190px !important;
+            min-width: 190px !important;
+            max-width: 190px !important;
+            flex: 0 0 190px !important;
+            background: #f5f5f5 !important;
+            border-right: 1px solid #ccc !important;
+        }
+        .flash{
+            width: 50px;
+            height:48px;
+            display: inline-block;
+            text-align: center;
+            color: white;
+            font-size: 22px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        .ivu-menu-submenu-title:hover{
+            color: #2679b5;
+            background-color: white;
+            border-left: 2px solid #2b7dbc;
+        }
+        .ivu-menu-opened .ivu-menu-submenu-title:hover{
+            color: #2679b5;
+            background-color: #f5f5f5;
+            border-left:none;
+        }
+        .ivu-menu-item-active .ivu-menu-submenu-title:hover{
+            border-left:none;
+            background-color:white;
+
+        }
+        .ivu-menu-item-active{
+            color: #2679b5;
+            background-color: white;
+            border-right: 2px solid #2b7dbc;
+            width: 191px;
+        }
+        .ivu-menu-item-active .ivu-menu-submenu-title span{
+            font-weight: bold;
+        }
+        .ivu-menu-item-selected{
+            font-weight: bold;
+        }
+        .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after{
+            background: white;
+        }
+        .ivu-menu-submenu-title-icon{
+            font-size: 16px;
+        }
+        .ivu-menu-vertical .ivu-menu-submenu-title-icon{
+            top:1px;
+        }
+        .ivu-menu-submenu ul div{
+            background: white !important;
+        }
+        .ivu-menu-submenu ul a{
+            background: white !important;
+        }
+        .ivu-menu-item:hover{
+            text-decoration:underline;
+            color: #2679b5;
+        }
+        .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu){
+            color: #2b7dbc;
+        }
+        .breadcrumb{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 41px;
+            line-height: 41px;
+            border-bottom: 1px solid #e5e5e5;
+            background-color: #f5f5f5;
+            padding-left: 15px;
+        }
+    </style>
+    <script src="/Public/plugin/vue/vue.min2.6.7.js"></script>
+    <script src="/Public/plugin/vue/iview.min.js"></script>
+    <script src="/Public/plugin/vue/vue-resource.min.js"></script>
+    <script>
+        var ApiUrl = "http://" + window.location.host + "/";
+        var menu = JSON.parse('{$gData}');
+        console.log(menu)
+    </script>
+</head>
+<body>
+<div class="layout" id="newWrap" v-cloak v-if="menu">
+    <Header>
+        <span style="margin-left: 12px;"><small><i class="icon-leaf"></i>  活动聚管理系统</small></span>
+        <div class="userI-info">
+            <div class="flash">
+                <a title="刷新当前页面" style="color: white;" href="">
+                <Icon type="md-refresh" />
+                </a>
+            </div>
+            <Dropdown trigger="click" @on-click="userMsg">
+                <!--内容描述-->
+                <i-button ghost>
+                    <span>{{userData.username}}</span>
+                    <Icon type="ios-arrow-down"></Icon>
+                </i-button>
+                <Dropdown-menu slot="list">
+                    <Dropdown-item name="user"><Icon type="ios-contact-outline" style="font-size: 18px;margin-right: 5px;"></Icon><span style="vertical-align: middle;">{{userData.username}}</span></Dropdown-item>
+                    <Dropdown-item name="out"><Icon type="ios-close-circle-outline"  style="font-size: 18px;margin-right: 5px;"></Icon><span style="vertical-align: middle;">退出</span></Dropdown-item>
+                </Dropdown-menu>
+            </Dropdown>
+        </div>
+    </Header>
+    <Layout  :style="{minHeight:'calc(100vh - 45px)'}">
+        <Sider  hide-trigger :style="{background: '#fff',borderRight:'0.5px solid rgba(0, 0, 0, 0.1)'}">
+            <!--:open-names  :active-name-->
+            <i-menu :open-names="menu_select.tab"  :active-name="menu_select.tabChild" theme="light" width="auto" accordion=true>
+                <!--:name -->
+                <Submenu :name="item.title" v-for="item in menu" :style="{borderBottom: 'rgb(229, 229, 229) 1px solid',borderTop: 'rgb(252, 252, 252,0) 1px solid'}" >
+                    <template slot="title">
+                        <i :class="item.icon" style="font-size: 18px;vertical-align: middle;margin-right: 5px"></i>
+                        <span>{{item.title}}</span>
+                    </template>
+                    <!--:name-->
+                    <div  v-for="itemData in item.submenu">
+                        <div v-if="itemData.submenu">
+                            <Submenu :name="itemData.title">
+                                <template slot="title">
+                                    {{itemData.title}}
+                                </template>
+                                <div  v-for="itemDataData in itemData.submenu">
+                                    <Menu-item :to="itemDataData.path" :name="itemDataData.title">{{itemDataData.title}}</Menu-item>
+                                </div>
+                            </Submenu>
+                        </div>
+                        <Menu-item v-else :name="itemData.title" :to="itemData.path">{{itemData.title}}</Menu-item>
+                    </div>
+                </Submenu>
+            </i-menu>
+        </Sider>
+        <Layout class="content">
+            <Breadcrumb style="padding-bottom: 20px;" class="breadcrumb">
+                <Breadcrumb-item to="/" style="cursor: pointer"> <i class="icon-home home-icon" style="font-size: 20px;vertical-align: middle;margin-right: 10px"></i><span style="vertical-align: middle;color: #4c8fbd;">首页</span></Breadcrumb-item>
+                <Breadcrumb-item to="" v-for="item in menu_select.tab" style="color: #555">{{item}}</Breadcrumb-item>
+                <Breadcrumb-item  style="color: #555;font-weight: normal">{{menu_select.tabChild}}</Breadcrumb-item>
+            </Breadcrumb>
+            <p class="content-title">{{menu_select.tabChild}}</p>
+            {__CONTENT__}
+        </Layout>
+    </Layout>
+</div>
+<script src="/Public/js/hdjadmin/yyzs/newWrap.js?v={$hdj_admin_version}"></script>
+<script src="/Public/js/common/jquery.min.2.2.3.js"></script>
+<script>
+    var gData = '{$gData}';
+</script>
+</body>
+</html>

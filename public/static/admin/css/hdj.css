@@ -1,0 +1,32 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2017-2-6, 17:40:31
+    Author     : Administrator
+*/
+
+/*背景组件的遮罩用class控制，而不需要写在代码上增加*/
+.template-bg-material{
+    display: inline-block;
+    border: 1px dotted #D9D9D9;
+    margin: 0 9px 10px 0;
+    background-color: #fff;
+    width: 125px;
+    height: 238px;
+    position: relative !important;
+}
+.template-bg-material>.bg_md{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    max-width: 100% !important;
+    left: 0;
+    top: 0;
+}
+.template-bg-material>.bg_md>img{
+    width: 100%;
+    height: 100%;
+}

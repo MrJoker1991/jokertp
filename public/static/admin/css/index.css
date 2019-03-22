@@ -1,0 +1,1335 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html, body {
+    background-color: #F9F9F9;
+    height: 100%;
+}
+header {
+    width: 100%;
+    height: 80px;
+    padding: 0 50px;
+    background-color: #FFFFFF;
+}
+.container {
+    margin: 0 auto;
+    width: 960px;
+    font-size: 14px;
+}
+header > div {
+    height: 100%;
+    margin: 0 auto;
+}
+/*.error {*/
+    /*color: red;*/
+    /*font-style: italic;*/
+/*}*/
+.header-logo {
+    margin-top: 25px;
+    float: left;
+}
+.header-grayline {
+    width: 1px;
+    height: 30px;
+    display: inline-block;
+    background-color: #E7E7E7;
+    margin: 25px 10px;
+    float: left;
+}
+.header-city {
+    height: 80px;
+    display: inline-block;
+    line-height: 80px;
+    color: #F66926;
+    float: left;
+    margin-right: 28px;
+}
+.header-city > img {
+    margin: 0 3px;
+}
+.header-search {
+    height: 80px;
+    display: inline-block;
+    font-size: 0;
+    margin-top: 25px;
+}
+.header-input {
+    border: 1px solid #E7E7E7;
+    width: 300px;
+    height: 32px;
+    float: left;
+}
+.header-button {
+    width: 32px;
+    height: 32px;
+    background: url("/Public/image/hdjadmin/fangdajing.png") no-repeat;
+    background-size: 100% 100%;
+    float: right;
+    border-radius: 0 5px 5px 0;
+}
+.header-download {
+    height: 100%;
+    width: 100px;
+    display: inline-block;
+    float: right;
+    line-height: 80px;
+}
+.header-download > img {
+    width: 14px;
+    height: 20px;
+    margin-right: 6px;
+    position: relative;
+    top: 6px;
+}
+main {
+    background-color: #F9F9F9;
+    color: #333333;
+    font-size: 14px;
+}
+main > div {
+    border: 1px solid #dedede;
+    margin: 10px 0 10px 0;
+    background-color: white;
+}
+.basic-info {
+    width: 100%;
+    padding-left: 60px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.basic-info > div {
+    margin: 25px 0;
+}
+.basic-img > img {
+    width: 123px;
+    height: 57px;
+    position: relative;
+    right: 20px;
+}
+.basic-title {
+    width: 100%;
+    height: 50px;
+}
+.boldtext {
+    width: 70px;
+    height: 100%;
+    text-align: right;
+    font-weight: bold;
+    margin-right: 13px;
+    display: inline-block;
+    float: left;
+}
+.title-input {
+    height: 38px;
+    width: 600px;
+    border: 1px solid #E7E7E7;
+    border-radius: 5px;
+    text-indent: 1.3em;
+    margin-top: 5px;
+}
+.basic-sponsor {
+    width: 100%;
+    height: 50px;
+}
+.sponsor-img {
+    width: 48px;
+    height: 48px;
+    margin: 0 15px 0 3px;
+    vertical-align: middle;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.sponsor-name {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+#sponsor {
+    /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+    border: solid 1px #E7E7E7;
+    /*很关键：将默认的select选择框样式清除*/
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    /*在选择框的最右侧中间显示小箭头图片*/
+    background: url("/Public/image/hdjadmin/xia.png") no-repeat scroll right center transparent;
+    background-size: 15px 15px;
+    background-position-x: 95%;
+    text-indent: 0.3em;
+    /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+    padding-right: 10px;
+    height: 38px;
+    border-radius: 3px;
+    width: 300px;
+    text-indent: 0.6em;
+    position: relative;
+    top: 2px;
+}
+.place-box {
+    height: 100%;
+    width: calc(100% - 90px);
+    display: inline-block;
+}
+.place-city {
+    height: 50px;
+    padding-top: 5px;
+    display: inline-block;
+}
+#city-select select {
+    /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+    border: solid 1px #E7E7E7;
+
+    /*很关键：将默认的select选择框样式清除*/
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+
+    /*在选择框的最右侧中间显示小箭头图片*/
+    background: url("/Public/image/hdjadmin/xia.png") no-repeat scroll right center transparent;
+    background-size: 15px 15px;
+    background-position-x: 88%;
+    text-indent: 0.3em;
+
+    /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+    padding-right: 30px;
+
+    height: 38px;
+    border-radius: 3px;
+    width: 120px;
+    text-indent: 0.6em;
+}
+/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+select::-ms-expand {
+    display: none;
+}
+.place-address {
+    height: 50px;
+    /*border: 1px solid red;*/
+    width: 650px;
+    vertical-align: middle;
+    position: relative;
+    display: inline-block;
+}
+.place-input {
+    display: inline-block;
+    height: 38px;
+    width: 500px;
+    border: 1px solid #E7E7E7;
+    border-radius: 5px;
+    text-indent: 1em;
+    margin-top: 5px;
+}
+.place-mapPic {
+    position: absolute;
+    right: 165px;
+    top: 13px;
+}
+.place-btn {
+    display: inline-block;
+    float: right;
+    width: 100px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    background-color: #F66926;
+    border-radius: 4px;
+    color: white;
+    font-size: 12px;
+    margin: 4px 0 0 0px;
+}
+.floor-input {
+    height: 38px;
+    width: 358px;
+    border: 1px solid #E7E7E7;
+    border-radius: 5px;
+    text-indent: 1em;
+    margin-top: 5px;
+}
+.map-box{
+    width: 600px;
+    height: 350px;
+    border: 1px solid #dedede;
+    margin: 15px 0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+    display: none;
+    position: relative;
+}
+#amapinput{
+    border: 1px solid red;
+    width: 500px;
+    height: 38px;
+}
+.position-box{
+    width: 200px;
+    height: 30px;
+    display: inline-block;
+    position: relative;
+    top: 15px;
+    left: 36px;
+    border-radius: 6px;
+    font-size: 0;
+}
+.position-box>div{
+    display: inline-block;
+    font-size: 12px;
+    width: 50%;
+    height:100%;
+    color: #0a0a0a;
+    vertical-align:middle;
+    text-align: left;
+    line-height: 30px;
+}
+.date-justLine {
+    display: inline-block;
+    width: 48px;
+    height: 2px;
+    background-color: #F66926;
+    margin: 0 40px 0 35px;
+    position: relative;
+    top: 10px;
+}
+.date-start-box, .date-start-end {
+    width: 300px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 2px;
+    position: relative;
+}
+.date-img {
+    position: absolute;
+    top: 38px;
+    left: 10px;
+}
+.date-timeimg {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 38px;
+    right: 95px;
+}
+.date-fourbox {
+    display: inline-block;
+    height: 38px;
+    border: 1px solid #E7E7E7;
+    border-radius: 2px;
+    margin-top: 10px;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+.start-date {
+    width: 160px;
+    border-radius: 4px;
+    text-indent: 3.5em;
+}
+.start-time {
+    display: inline-block;
+    width: 120px;
+    margin-left: 8px;
+    text-indent: 3em;
+}
+.end-date {
+    width: 160px;
+    border-radius: 4px;
+    text-indent: 3.5em;
+
+}
+.end-time {
+    display: inline-block;
+    width: 120px;
+    margin-left: 8px;
+    text-indent: 3em;
+}
+.upload-pic {
+    display: inline-block;
+    width: 314px;
+    height: 172px;
+    border: 1px solid #E7E7E7;
+    padding: 5px;
+    vertical-align: middle;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+.upload-right {
+    display: inline-block;
+    /*height: 172px;*/
+    vertical-align: middle;
+}
+.label-box-yes {
+    height: 60px;
+    width: 750px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.label-left {
+    width: 550px;
+    height: 150px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.label-right {
+    height: 150px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+.label-box {
+    display: inline-block;
+
+}
+.label-yes-box {
+    vertical-align: middle;
+    border-bottom: 1px solid #E7E7E7;
+    margin-bottom: 15px;
+    min-height: 56px;
+    width: 760px;
+}
+.label-yes {
+    width: 87px;
+    height: 28px;
+    display: inline-block;
+    background: url("/Public/image/hdjadmin/label-orange.png");
+    background-size: 100% 100%;
+    margin: 14px 18px 5px 0px;
+    font-size: 12px;
+    color: #F66926;
+    line-height: 28px;
+    /*text-align: center;*/
+}
+.label-yes-box>div{
+    display: inline-block;
+    margin: 0 15px 15px 0;
+    vertical-align: middle;
+}
+.label-yes span{
+    cursor: pointer;
+}
+.label-yes-rotate{
+    animation: 0.6s labelyes;
+}
+@keyframes labelyes {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+.layer-label-block{
+    min-height: 30px;
+    border-bottom: 1px dashed #dedede;
+    padding: 15px 15px 15px 30px;
+}
+.layer-label-type-box{
+    display: inline-block;
+    width: 260px;
+    max-height: 150px;
+    overflow: auto;
+    overflow-x: hidden;
+
+}
+.layer-label-textarea{
+    width: 220px;
+    resize: none;
+    height: 150px;
+    padding: 0.5em;
+}
+.layer-label-type-box>ul{
+    list-style: none;
+}
+.layer-label-type-box li{
+    display: inline-block;
+    width: 65px;
+    height: 26px;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    margin: 5px;
+    text-align: center;
+    line-height: 23.8px;
+    font-size: 12px;
+    cursor: pointer;
+    color: darkgrey;
+}
+.layer-label-type-box li:hover{
+    border: 1px solid #f66926;
+    color: #f66926;
+}
+.label-type-box{
+    border: 1px dotted #dedede;
+    border-radius: 5px;
+    width: 100%;
+    height: 205px;
+    text-align: center;
+    position: relative;
+    background-color: snow;
+}
+.label-type-delete{
+    width: 100%;
+    height: 100%;
+    background-color: #f66926;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    display: none;
+    opacity: 0.7;
+    border-radius: 5px;
+}
+.labeltype{
+    position: relative;
+    width: 90%;
+    height: 23px;
+    line-height: 23px;
+    margin-top: 10px;
+    margin-left: 5%;
+    cursor: pointer;
+}
+.label-type-text{
+    width: 100%;
+    height: 95%;
+    display: block;
+    border: 1px dashed #f66926;
+    border-radius: 5px;
+    color: #46474d;
+    font-size: 12px;
+    line-height: 21px;
+}
+.label-set-type{
+    font-size: 12px;
+    width: 90%;
+    height: 25px;
+    text-align: center;
+    position: absolute;
+    bottom: 3px;
+    left: 4.5px;
+}
+.label-more-type-box{
+    width: 225px;
+    min-height: 247px;
+    padding-top: 48px;
+}
+.label-more-type-box-padding{
+    width: 100%;
+    min-height: 198px;
+    border: 1px dotted #dedede;
+    padding: 0 7px;
+    cursor: default;
+    background-color: snow;
+
+}
+.label-more-type-box-padding>div{
+    display: inline-block;
+    width: 60px;
+    height: 25px;
+    line-height: 23px;
+    font-size: 12px;
+    margin: 8px 3px 0 3px;
+    text-align: center;
+    color: grey;
+}
+.pick-border{
+    border: 1px solid #f66926;
+    color: #f66926;
+}
+
+
+
+
+.label-delete {
+    cursor: pointer;
+    font-weight: bolder;
+    float: left;
+    margin: 0 5px 2px 8px;
+    font-size: 14px;
+}
+.label-add {
+    font-size: 18px;
+    font-weight: bolder;
+    float: left;
+    margin: 0 5px 0 8px;
+    position: relative;
+    bottom: 2px;
+}
+.label-change {
+    height: 50px;
+    line-height: 50px;
+}
+.label-change > img {
+    margin: 0 8px;
+    position: relative;
+    top: 2px;
+}
+.label-no-box {
+    height: 100px;
+    border-right: 1px solid #E7E7E7;
+}
+.label-no {
+    width: 87px;
+    height: 28px;
+    display: inline-block;
+    background: url("/Public/image/hdjadmin/label-gray.png");
+    background-size: 100% 100%;
+    margin: 14px 13px 0 0px;
+    font-size: 12px;
+    color: #F66926;
+    line-height: 28px;
+    /*text-align: center;*/
+    cursor: pointer;
+}
+.label-input {
+    width: 144px;
+    height: 38px;
+    border: 1px solid #E7E7E7;
+    border-radius: 5px;
+    text-indent: 1em;
+    margin: 10px 0;
+    float: left;
+
+}
+.label-btn {
+    width: 62px;
+    height: 30px;
+    background-color: #F66926;
+    float: right;
+    margin: 10px 10px;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 30px;
+    text-align: center;
+}
+.sign-up {
+    width: 100%;
+    padding-left: 60px;
+    border-radius: 5px;
+}
+.sign-set {
+    width: 100%;
+    margin-top: 20px;
+}
+.sign-box {
+    display: inline-block;
+}
+.sign-no {
+    width: 100%;
+    height: 200px;
+    text-align: center;
+    line-height: 150px;
+    font-size: 38px;
+}
+.sign-need {
+    display: block;
+}
+.sign-other {
+    display: none;
+    width: 100%;
+    margin-bottom: 35px;
+    text-align: left;
+}
+.other-input {
+    width: 450px;
+    height: 200px;
+    resize: none;
+    border: 1px solid #E7E7E7;
+    padding: 8px;
+    border-radius: 3px;
+    display: inline-block;
+}
+.other-input-size{
+    height: 26px;
+    margin-top: 17px;
+    text-indent: 0.5em;
+}
+.sign-type > div {
+    width: 128px;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid #E7E7E7;
+    display: inline-block;
+    margin-right: 25px;
+    font-size: 12px;
+}
+.sign-online {
+    background-color: #F66926;
+    color: white;
+}
+.sign-type {
+    border: 1px solid white;
+    margin: 4px 0 20px 0;
+}
+.other-types{
+    height: 30px;
+    font-size: 0;
+    border: 1px solid white;
+    margin-bottom: 8px;
+}
+.other-types>div{
+    width: 80px;
+    height: 100%;
+    display: inline-block;
+    line-height: 28px;
+    font-size: 12px;
+    text-align: center;
+}
+.other-type-free{
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    cursor: pointer;
+
+}
+.other-type-charge{
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #dedede;
+}
+.other-types-click{
+    background-color: #f66926;
+    border: 1px solid #f66926;
+    color: white;
+}
+
+.no-types{
+    height: 30px;
+    font-size: 0;
+    border: 1px solid white;
+    margin-bottom: 8px;
+}
+.no-types>div{
+    width: 80px;
+    height: 100%;
+    display: inline-block;
+    line-height: 28px;
+    font-size: 12px;
+    text-align: center;
+}
+.no-type-free{
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    cursor: pointer;
+}
+.no-type-charge{
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #dedede;
+}
+.no-types-click{
+    background-color: #f66926;
+    border: 1px solid #f66926;
+    color: white;
+}
+.sign-info-box {
+    width: 790px;
+    border-top: 1px solid #E7E7E7;
+    border-bottom: 1px solid #E7E7E7;
+    min-height: 530px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+
+}
+.sign-ticket-box {
+    width: 790px;
+    padding: 30px 30px;
+    position: relative;
+}
+.sign-input-box {
+    width: 500px;
+    height: 100%;
+    display: inline-block;
+}
+.sign-input-title {
+    width: 90px;
+    height: 24px;
+    background: url("/Public/image/hdjadmin/titlebg.png");
+    color: white;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+.sign-input-top {
+    border-bottom: 1px solid #E7E7E7;
+    margin: 15px 0;
+    padding-bottom: 8px;
+}
+.sign-input-bottom {
+    margin-top: 15px;
+    min-height: 185px;
+}
+.sign-inputdiv {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    padding-left: 15px;
+    position: relative;
+    text-align: right;
+
+}
+.eraser {
+    width: 40px;
+    height: 15px;
+    background-color: white;
+    position: absolute;
+    bottom: -10px;
+    right: -5px;
+}
+.sign-inputdiv > input {
+    width: 166px;
+    height: 38px;
+    border: 1px solid #E7E7E7;
+    border-radius: 4px;
+    float: right;
+    margin: 12px 100px 0 0;
+    text-indent: 1.2em;
+}
+.sign-inputdiv img {
+    margin: 0 15px;
+}
+.addInput-btn {
+    width: 102px;
+    height: 38px;
+    background: #F66926;
+    color: white;
+    line-height: 38px;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 4px;
+    margin: 10px 0 20px 100px;
+}
+.new-input {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    padding-left: 15px;
+    position: relative;
+}
+.cornerImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.delete-input {
+    float: right;
+    margin-top: 20px;
+}
+.img-bitian {
+    float: left;
+    margin: 20px 20px 0 15px;
+}
+.img-newbt {
+    float: left;
+    margin: 20px 20px 0 15px;
+}
+.diy-name-input {
+    width: 120px;
+    height: 38px;
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    margin: 0 10px;
+    text-indent: 1em;
+}
+.diy-content-input {
+    width: 200px;
+    height: 38px;
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    text-indent: 1em;
+
+}
+.sign-input-diy {
+    width: 244px;
+    border: 1px solid #E7E7E7;
+    display: inline-block;
+    float: right;
+    margin-top: 16.5px;
+    padding: 9px 12px;
+}
+.input-label-box {
+    font-size: 0;
+    margin-bottom: 10px;
+   
+
+}
+.input-label {
+    display: inline-block;
+    width: 100px;
+    height: 38px;
+    border: 1px solid #E7E7E7;
+    margin: 8px 4px 0 5px;
+    vertical-align: middle;
+    font-size: 12px;
+    line-height: 38px;
+    border-radius: 3px;
+}
+.input-label > img {
+    float: left;
+    margin: 8px;
+}
+.other-label {
+    height: 38px;
+    border: 1px solid #E7E7E7;
+    margin: 8px 4px 10px 5px;
+    vertical-align: middle;
+    font-size: 12px;
+    line-height: 38px;
+    border-radius: 3px;
+}
+.other-label > img {
+    float: left;
+    margin: 14px 10px;
+}
+.ticket-table {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0 13px 0;
+    border-collapse: collapse;
+}
+.ticket-table td {
+    width: 16.666%;
+    height: 48px;
+}
+.tr-content {
+    background-color: #F9F9F9;
+    border-bottom: 5px solid white;
+}
+.tr-content td:nth-of-type(1) {
+    font-weight: bold;
+}
+.tr-content td:nth-of-type(2) {
+    color: #f66926;
+}
+.t-numval{
+    color: #f66926;
+}
+.t-xgval{
+    color: #f66926;
+}
+.tr-content td:nth-of-type(5) {
+    color: #f66926;
+}
+.td-btn > img {
+    margin: 0 6.5px;
+}
+.ticket-charge {
+    border: 1px solid #E7E7E7;
+    margin: 30px 0 20px 0;
+    padding-top: 13px;
+    display: none;
+}
+.charge-title {
+    height: 30px;
+}
+.charge-title > div {
+    display: inline-block;
+    width: 80px;
+    height: 100%;
+}
+.ticket-type {
+    float: left;
+    text-align: center;
+    line-height: 30px;
+    background: url("/Public/image/hdjadmin/fb-004.png") no-repeat;
+    background-size: 100% 100%;
+    color: white;
+    font-size: 13px;
+}
+.ticket-delete {
+    float: right;
+    line-height: 35px;
+}
+.charge-input {
+    height: 38px;
+    line-height: 38px;
+    margin: 20px 0 20px 20px;
+    position: relative;
+}
+.charge-input > span {
+    font-weight: bold;
+}
+.charge-input > input {
+    height: 38px;
+    border: 1px solid #dedede;
+    border-radius: 3px;
+    text-indent: 1em;
+    margin: 0 10px;
+    padding-right: 50px;
+}
+.ticket-name {
+    width: 280px;
+}
+.ticket-price {
+    width: 140px;
+}
+.ticket-num {
+    width: 140px;
+}
+.ticket-xg {
+    width: 140px;
+    height: 38px;
+    border: 1px solid #dedede;
+    border-radius: 3px;
+    text-indent: 1em;
+    margin: 0 10px;
+    padding-right: 50px;
+}
+.charge-input > b {
+    position: absolute;
+    font-weight: 500;
+}
+.ticket-i1 {
+    left: 155px;
+    color: #f66926;
+}
+.ticket-i2 {
+    left: 350px;
+    color: #f66926;
+}
+.ticket-i3 {
+    left: 528px;
+}
+.check-btn {
+    width: 50px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 10px 0 15px;
+    padding-top: 6px;
+
+}
+.charge-footer > div {
+    width: 102px;
+    height: 38px;
+    line-height: 38px;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 0 10px;
+    position: relative;
+    top: 15px;
+
+}
+.saveBtn {
+    background-color: #f66926;
+}
+.cancelBtn {
+    background-color: #a7a9ad;
+}
+.charge-footer {
+    float: right;
+}
+.newTicket-div {
+    width: 100%;
+    height: 38px;
+}
+.newTicket-div > div {
+    width: 102px;
+    height: 100%;
+    display: inline-block;
+    text-align: center;
+    line-height: 38px;
+    vertical-align: middle;
+    border-radius: 4px;
+}
+.newFree {
+    background-color: #3995ff;
+    color: white;
+}
+.newCharge {
+    background-color: #f66926;
+    color: white;
+    margin: 0 15px;
+}
+.help-text {
+    color: #3995ff;
+}
+.detail-box {
+    width: 100%;
+    padding-left: 35px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 30px;
+
+}
+.detail-box > div:nth-of-type(2) {
+    width: 100%;
+    padding: 32px 20px 32px 0;
+}
+.add-model {
+    width: 846px;
+    height: 54px;
+    border: 1px dashed darkgrey;
+    line-height: 54px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+section {
+    width: 100%;
+    position: relative;
+    margin: 25px 0;
+
+}
+.container-div {
+    /*position: relative;*/
+    /*width: 100%;*/
+    /*vertical-align: middle;*/
+
+}
+.content-box {
+    width: 846px;
+    height: 100%;
+    min-height: 331px;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+    border: 1px solid #dedede;
+}
+.right-btn {
+    display: inline-block;
+    width: 42px;
+    height: 64px;
+    border: 1px solid #E7E7E7;
+    position: absolute;
+    right: 5.5px;
+    text-align: center;
+    font-size: 12px;
+}
+.move-delete {
+    bottom: 0;
+    line-height: 68px;
+}
+.move-up {
+    top: 0;
+}
+.move-down {
+    top: 70px;
+    padding-top: 6.8px;
+}
+/*此为预览状态下的宽，高是自适应的*/
+.content-box > img {
+    width: 846px;
+    vertical-align: middle;
+}
+.content-box textarea {
+    width: 100%;
+    min-height: 335px;
+    resize: none;
+    padding: 15px;
+    font-size: 16px;
+}
+.upload-icon {
+    width: 160px;
+    height: 160px;
+    margin: 85px auto;
+    text-align: center;
+    font-size: 18px;
+    color: #dedede;
+}
+#filePicker img {
+    position: relative;
+    top: 3px;
+    right: 2px;
+}
+.model-option {
+    width: 846px;
+    height: 125px;
+    border: 2px solid #f66926;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;;
+    margin-bottom: 25px;
+    display: none;
+    position: relative;
+
+}
+.model-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 3px;
+    width: 20px;
+    height: 20px;
+    display: none;
+}
+.model-option > div {
+    height: 100%;
+    width: 362px;
+    margin: 0 auto;
+    font-size: 0;
+}
+.model-photo, .model-text {
+    width: 180px;
+    height: 100%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 13px;
+}
+.modelbtn img {
+    margin: 22px 0 10px 0;
+}
+.model-line {
+    display: inline-block;
+    width: 1px;
+    height: 50px;
+    background-color: #dedede;
+    position: relative;
+    top: 26px;
+}
+footer {
+    width: 100%;
+    height: 96px;
+    background-color: white;
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    z-index: 100;
+    box-shadow: 0px 2px 12px 0px grey;
+}
+.footer-btn {
+    width: 750px;
+    height: 55px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+.footer-btn > div {
+    width: 320px;
+    height: 54px;
+    text-align: center;
+    line-height: 54px;
+    font-size: 18px;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 0 15px;
+}
+.previewBtn {
+    border: 2px solid #f66926;
+    color: #f66926;
+    float: left;
+}
+.postBtn {
+    background-color: #f66926;
+    color: white;
+    float: right;
+}
+.move-down span, .move-up span {
+    color: #f66926;
+    font-size: 20px;
+}
+.last-section {
+    width: 100%;
+    position: relative;
+    margin: 25px 0;
+}
+section:nth-of-type(1) .move-up {
+    color: #E7E7E7;
+}
+section:nth-last-of-type(2) .move-down {
+    color: #E7E7E7;
+}
+.container-div input{
+    width: 100%;
+    height: 100%
+}
+.picmode-box{
+    background-image: url("/Public/image/wx/uploadbg.png");
+    background-size: 100% 100%;
+}
+.upload-right>div{
+    display: inline-block;
+    vertical-align: middle;
+}
+.upload-btn-box{
+    width: 300px;
+    height: 168px;
+}
+.upload-btn{
+    width: 110px;
+    height: 38px;
+    background-color: #3995FF;
+    border-radius: 3.8px;
+    color: white;
+    text-align: center;
+    line-height: 38px;
+}
+.upload-btn>img{
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: 2px;
+}
+.photo-clip-box>input{
+    opacity: 0;
+    display: block;
+    margin: 0;
+}
+.photo-clip-box>button{
+    width: 60px;
+    height: 28px;
+    background-color: #3995FF;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    margin-top: 0;
+    float: right;
+}
+.posterbtn{
+    width: 110px;
+    height: 38px;
+    background-color: #3995FF;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    top: 1px;
+}
+.poster-list{
+    width: 100%;
+    border-bottom: 3px double #dedede;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.poster-list>div{
+    display: inline-block;
+    width: 90px;
+    height: 38px;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 36px;
+    margin: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+.poster-box{
+    width: 100%;
+    overflow: auto;
+    height: 446px;
+    overflow-x: hidden;
+    font-size: 0;
+    vertical-align: middle;
+}
+.poster-box>img{
+    width: 250px;
+    height: 117.5px;
+    border-radius: 3px;
+    margin: 5px 6px;
+    cursor: pointer;
+}
+.posterClick{
+    background-color: #f66926;
+    color: white;
+    border: 1px solid #f66926;
+}
+

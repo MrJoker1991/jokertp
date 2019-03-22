@@ -2,8 +2,8 @@
 
 return [
     // 应用调试模式
-    'app_debug'              => true,
-
+    'app_debug'             => true,
+    'release_domain'        => 'http://52.163.230.11',
 
     //数据库配置
     'database'=>[
@@ -71,9 +71,9 @@ return [
     ],
     //公众号相关配置
     'official_account_config' => [
-        'appid' => '',
-        'appsecret' => '',
-        'token' => '',
-        'encoding_aes_key' => 'encodingAESKey'
+        'appid' => 'wx7acc3a6f66f1689d',
+        'appsecret' => '4b379aba2cbfa52b355518124e65bebd',
+        'token' => 'joker',
+        'encoding_aes_key' => '4uMBkQY5tOpwmc4tEtaSd5Js2bem9gCQXbrue7Yq96y'
     ],
 ];

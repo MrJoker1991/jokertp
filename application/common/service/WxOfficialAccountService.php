@@ -90,36 +90,26 @@ class WxOfficialAccountService extends BaseService {
                 'appId' => $appId,
                 'appSecret' => $appSecret,
                 'get_access_token' => function($data){
-                    if (!in_array($_SERVER['HTTP_HOST'], array('wwwhdj.ygj.com.cn', 'wwwtshdj.ygj.com.cn'))) {
-                        $cacheService = new CacheService();
-                        $accessToken = $cacheService->getWxAccessTokenAllCache($data[0]);
-                        if ($accessToken) {
-                            return $accessToken;
-                        } else {
-                            $cacheService->delWxAccessTokenAllCache($data[0]);
-                            return false;
-                        }
-                    }else{
+                    $accessToken = CacheService::getOfficialAccountAccessToken($data[0]);
+                    if ($accessToken) {
+                        return $accessToken;
+                    } else {
                         return false;
                     }
                 },
                 'save_access_token' => function($data) {
-                    $cacheService = new CacheService();
-                    $cacheService->setWxAccessTokenAllCache($data[0], $data[1]);
+                    CacheService::setOfficialAccountAccessToken($data[0], $data[1]);
                 },
                 'get_jsapi_ticket' => function($data){
-                    $cacheService = new CacheService();
-                    $accessToken = $cacheService->getWxTicketAllCache($data[0]);
+                    $accessToken = CacheService::getOfficialAccountAccessTicket($data[0]);
                     if ($accessToken) {
                         return $accessToken;
                     } else {
-                        $cacheService->delWxTicketAllCache($data[0]);
                         return false;
                     }
                 },
                 'save_jsapi_ticket' => function($data){
-                    $cacheService = new CacheService();
-                    $cacheService->setWxTicketAllCache($data[0], $data[1]);
+                    CacheService::setOfficialAccountAccessTicket($data[0], $data[1]);
                 }
             )
         );
@@ -551,130 +541,6 @@ class WxOfficialAccountService extends BaseService {
         $cacheService->setPcWxLogin($msg->Ticket, $info[1]['id']);
     }
 
-
-
-    /**
-     * 发送邀请函
-     * @param $userId
-     * @param $invId
-     */
-    private function _sendInvitation($userId, $invId = ''){
-        $userService = new UserService();
-        $userInfo = $userService->getUserInfo('id', $userId);
-        $invitationService = new InvitationService();
-        $invitationInfo = $invitationService->getInvitationById($invId);
-        if(!empty($invitationInfo)){
-            $this->send(self::MESSAGE_IMAGE, $userInfo['wx_openid'], $invitationInfo['media_id']);
-        }else{
-            $this->send(self::MESSAGE_TEXT, $userInfo['wx_openid'], "对不起，您还未制作邀请函，请访问活动聚官网 <a href='http://www.huodongju.com'>www.huodongju.com</a>");
-        }
-    }
-
-    /**
-     * 发送邀请函
-     * @param $invId
-     * @param $wx_openid
-     */
-    private function _sendPcInvitation($invId, $wx_openid){
-        $invitationService = new InvitationService();
-        $invitationInfo = $invitationService->getInvitationById($invId);
-        if(!empty($invitationInfo)){
-            $this->send(self::MESSAGE_IMAGE, $wx_openid, $invitationInfo['media_id']);
-        }else{
-            $this->send(self::MESSAGE_TEXT, $wx_openid, "对不起，该邀请函不存在，请重新获取");
-        }
-    }
-
-    /**
-     * 发送邀请函
-     * @param $openid
-     */
-    private function _sendInvitationLast($openid){
-        $userService = new UserService();
-        $userInfo = $userService->getUserInfo('wx_openid', strval($openid));
-        $invitationService = new InvitationService();
-        $invitationInfo = $invitationService->getInvitationDetail(array('user_id'=>$userInfo['id']));
-        if(!empty($invitationInfo)){
-
-            if(!empty($invitationInfo['media_id']) && $invitationInfo['media_expire'] > time()){
-                $this->send(self::MESSAGE_IMAGE, $userInfo['wx_openid'], $invitationInfo['media_id']);
-            }else{
-                $md5ImgFile = md5($invitationInfo['qiniu_path']);
-                $md5ImgFile = 'Public/image/test/' . $md5ImgFile . '.png';
-                $img = file_get_contents($invitationInfo['qiniu_path']);
-                file_put_contents($md5ImgFile , $img);
-                //需要处理生成文件失败
-                $res = $this->uploadTempMedia('image', realpath($md5ImgFile));
-                if($res->media_id){
-                    unlink($md5ImgFile);
-                    $data = array();
-                    $data['id'] = $invitationInfo['id'];
-                    $data['media_id'] = $res->media_id;
-                    $data['media_expire'] = strtotime("+3 days");
-                    $invitationService->updateInvitation($data);
-                }else{
-                    debug_log('生成邀请函失败 ID：' . $invitationInfo['id']);
-                    $this->send(self::MESSAGE_TEXT, $userInfo['wx_openid'], "您的邀请函生成失败，请联系客服");
-                }
-                $this->send(self::MESSAGE_IMAGE, strval($openid), strval($res->media_id));
-            }
-        }else{
-            $this->send(self::MESSAGE_TEXT, $userInfo['wx_openid'], "对不起，您还未制作邀请函，请访问活动聚官网 <a href='http://www.huodongju.com'>www.huodongju.com</a>");
-        }
-    }
-
-
-    /**
-     * 关联留言
-     * @param $messageId
-     * @param $userInfo
-     * @param $msg
-     */
-    private function _messageRelevance($messageId, $userInfo, $msg){
-        if (!empty($userInfo)) {
-            $baseService = new BaseService();
-            $messageModel = new ActivityMessageModel();
-            $messageModel->baseSave(array('id' => $messageId), array('user_id' => $baseService->descryptId($userInfo['id']), 'user_avatar' => $userInfo['icon'], 'user_nick' => $userInfo['nick']));
-            $cacheService = new CacheService();
-            $cacheService->setMessageQR($messageId, 1);
-        }
-        $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "Hi,你来啦。\n主办方收到您的留言啦，回复后将在第一时间通知您。");
-    }
-
-    /**
-     * 回复买票
-     * @param $id
-     * @param $msg
-     * @throws \Think\Exception
-     */
-    private function _replyBuyTicket($id, $msg){
-        $cacheService = new CacheService();
-        $cacheService->setPcBuyTicketQR($id,1);
-        $ticketInfo = $cacheService->getPcBuyTicketInfo($id);
-        $activityService = new ActivityService();
-        $activityInfo = $activityService->getActivityInfo(array('id'=>$ticketInfo['activityId']));
-        $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "Hi,你来啦。\n您正在报名参加《".$activityInfo['title']."》，<a href='". U('Wx', '', false, true). 'Activity/getActivitySignViewByQr?id=' . $id  ."'>点击这里</a>完成购票");
-    }
-
-    /**
-     * 扫码关注活动
-     * @param $aid
-     * @param $userInfo
-     * @param $msg
-     * @throws \Think\Exception
-     */
-    private function _attentionActivity($aid, $userInfo, $msg){
-        $activityService = new ActivityService();
-        $userFollowService = new UserFollowService();
-        $activityInfo = $activityService->getActivityInfo(array('id'=>$aid));
-        $data = array();
-        $data['user_id'] = $this->descryptId($userInfo['id']);
-        $data['type'] = 1;
-        $data['follow_id'] = $this->descryptId($aid);
-        $userFollowService->addFollow($data);
-        $this->send(self::MESSAGE_TEXT,  $msg->FromUserName, "Hi,你来啦。\n您关注活动《<a href='". U('Wx', '', false, true). 'Activity/activityDetail/id/'.$aid.'/?id=' . $aid  ."'>".$activityInfo['title']."</a>》，记得准时参加哦");
-    }
-
     /**
      * 创建菜单
      * @param $menuJson
@@ -693,158 +559,13 @@ class WxOfficialAccountService extends BaseService {
     }
 
     /**
-     * 记录48小时内互动过的用户
-     */
-    public function setActiveUsersInTwoDays($msg){
-        $openid = strval($msg->FromUserName);
-        $cacheService = new CacheService();
-        $cacheService->setActiveUsersInTwoDays('hdj', $openid);
-    }
-
-    /**
-     * 获取48小时内互动过的用户
-     */
-    public function getActiveUsersInTwoDays(){
-        $cacheService = new CacheService();
-        $activeUsers = $cacheService->getActiveUsersInTwoDays('hdj');
-        return $activeUsers;
-    }
-
-    /**
-     * 给48小时内互动过的用户推送消息
-     */
-    public function sendMessageToActiveUsersInTwoDays($contentType = '1'){
-        $activeUsers = $this->getActiveUsersInTwoDays();
-        $totalNum = count($activeUsers);
-        $successNum = 0;
-        $failNum = 0;
-        if (!empty($activeUsers)) {
-            if ($contentType != '1') {
-                $contentArr = [
-                    [
-                        'type' => self::MESSAGE_TEXT,
-                        'content' => '三七、三八节倒计时......\n年后活动强心剂，不能错过！\n还怕节前做不好活动？上活动聚，一键生成你的专属活动，快速增粉，精准拓客！不要错过啦\n【免费用】扫码进入：\n'
-                    ],
-                    [
-                        'type' => self::MESSAGE_IMAGE,
-                        'content' => 'PigNLkgLTTFlcSNKr9ux7YWrhGoDmUWI21c_tooMcb4'
-                    ],
-                    [
-                        'type' => self::MESSAGE_TEXT,
-                        'content' => '福利领取：\n回复：礼包，获取活动营销干货\n回复：表格，获取1000+涵盖多行业的Excel模板案例\n免费福利不断更新中，记得常回来看看~\n'
-                    ],
-                ];
-            } else {
-                $contentArr = [
-                    [
-                        'type' => self::MESSAGE_TEXT,
-                        'content' => '还怕节前做不好活动？快来骚扰客服，手把手教您做活动，快速增粉，精准拓客！不要错过啦\n推送微信号：可雅号\n'
-                    ],
-                    [
-                        'type' => self::MESSAGE_IMAGE,
-                        'content' => 'PigNLkgLTTFlcSNKr9ux7bzRAFiSdceRcniIzKffG00'
-                    ],
-                ];
-            }
-
-            //开始发送
-            foreach ($activeUsers as $oneUser) {
-                $hasFail = false;
-                foreach ($contentArr as $oneContent) {
-                    $sendRes = $this->send($oneContent['type'], $oneUser, $oneContent['content']);
-                    if (is_array($sendRes) && isset($sendRes[0]) && is_object($sendRes[0]) && isset($sendRes[0]->errcode) && $sendRes[0]->errcode) {
-                        $hasFail = true;
-                    }
-                }
-                $hasFail ? $failNum++ : $successNum++;
-            }
-
-        }
-        return ['totalNum' => $totalNum, 'successNum' => $successNum, 'failNum' => $failNum];
-    }
-
-
-    /**
      * 自动回复
      * @param $msg
      */
     public function autoReply($msg){
 
-        if ($msg->Content == '2019') {  //2018年12月26日 新增
-            $this->send(self::MESSAGE_MP_NEWS, $msg->FromUserName, "PigNLkgLTTFlcSNKr9ux7R6NKmNSDhH75rECOQNsKmo");
-        } else if ($msg->Content == '12') { //2018年11月30日09:31 新增
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "【活动聚】12月活动营销指导方案，添加客服微信号：hdj-kf（或长按下图二维码添加），备注“12”，获取营销PPT。");
-            $this->send(self::MESSAGE_IMAGE, $msg->FromUserName, "PigNLkgLTTFlcSNKr9ux7XvZkmyddTvIj1hzFaAeIWI");
-        } else if ($msg->Content == '精选') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "活动营销精选超值大礼包，下载链接: https://pan.baidu.com/s/1wUvSOPi5GCSeS4f6FIPSRQ 提取码: vdb4 \n\n感谢您的到来，更多福利等你领：\n回复“0102”，获取100套旅游类活动、景区活动组织策划干货；\n回复“0518”，获取150套团建活动方案，集体活动&团建活动&暖场活动策划大全；\n回复“0408”，获取上百套创意高端PPT合集。\n回复“12”，免费获取12月互动营销指导方案\n\n一键领取活动神器→<a href='https://mp.weixin.qq.com/s/PARVNksOQBj5uhcB20kRdg'>活动聚小程序</a>");
-        } else if ($msg->Content == '0102') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "100套旅游类活动景区活动策划干货，下载链接：https://pan.baidu.com/s/1XYGUuU25SOWxewY93UBA_g 提取密码: b9a3 \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '0518') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "150套团建活动方案/集体活动/团建暖场游戏活动策划大全，下载链接: https://pan.baidu.com/s/1zy3uV2W8vzC-LsIUsJn4LA 提取密码：uinq \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '0307') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "2018年最新青少年夏令营活动策划60套干货资料，下载链接：https://pan.baidu.com/s/12JiLq8Cti1dsmcCTjN2nag 提取密码：a56h \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '0408') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "上百套创意高端ppt合集，赶紧MARK。下载链接：https://pan.baidu.com/s/1YNW1uYtzxsU-ZWTqmOnZ7Q 密码：el2l \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '审核') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "您好，您的活动发布后可直接分享给好友了哦~\n如需被推荐到首页，需耐心等待小编审核（工作日1-6小时内，周末24小时内）；被推荐后您将会收到系统推送的通知。\n送上我们的审核推荐标准，您可以先查看：https://mp.weixin.qq.com/s/Ukkc-gjqXBOPPNT6zZso2A");
-        } elseif ($msg->Content == '营销') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "活动营销精选超值大礼包，下载链接: https://pan.baidu.com/s/1wUvSOPi5GCSeS4f6FIPSRQ 提取码: vdb4 \n干货到手了，记得花样行动起来！\n\n一键领取活动神器→<a href='https://mp.weixin.qq.com/s/PARVNksOQBj5uhcB20kRdg'>活动聚小程序</a>");
-        } //old
-        else if (strcasecmp($msg->Content, 'gina') == 0) {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "Gina的个人微信号：Im_Gina7");
-        } elseif (strcasecmp($msg->Content, 'rabi') == 0) {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "RabiQ的邮箱是：rabbit_oe@live.cn\n个人公众号是：【不得了的蜜柑】\n（微信号：impressive_org）");
-        } elseif (strcasecmp($msg->Content, '邀请函') == 0) {
-            $this->_sendInvitationLast($msg->FromUserName);
-        } elseif (strcasecmp($msg->Content, '策划案') == 0) {  //#2017年10月11日 运营新增规则 http://wiki.qianyewang.com:8080/browse/HDJOP-597
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "1000套活动庆典策划方案，\n下载链接： https://pan.baidu.com/s/1miqqhuC 密码: nedg \n\n 在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动。<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚 App</a>\n\n继续回复关键词：\n案例+您的微信号\n免费获取40套高端精美的活动策划案PPT。");
-        } elseif ($msg->Content == '0419') {  //#2018年4月20日 运营新增规则 http://wiki.qianyewang.com:8080/browse/HDJ-4978
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "100套旅游类活动景区活动策划干货，下载链接：https://pan.baidu.com/s/1XYGUuU25SOWxewY93UBA_g  提取密码: b9a3 \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '0420') {  //#2018年4月20日 运营新增规则 http://wiki.qianyewang.com:8080/browse/HDJ-4978
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "2018年最新青少年夏令营活动策划60套干货资料，下载链接：https://pan.baidu.com/s/12JiLq8Cti1dsmcCTjN2nag 提取密码：a56h \n\n 在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '0421') {  //2018年4月20日 运营新增规则 http://wiki.qianyewang.com:8080/browse/HDJ-4978
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "150套团建活动方案/集体活动/团建暖场游戏活动策划大全，下载链接: https://pan.baidu.com/s/1zy3uV2W8vzC-LsIUsJn4LA  提取密码：uinq \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif (strstr($msg->Content, '案例')) {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "40套高端活动策划案PPT下载链接：https://pan.baidu.com/s/1mh7APUK 密码: 8bmm");
-        } elseif ($msg->Content == '0706' || $msg->Content == '0304') { //2018年7月10日 运营新增规则 http://wiki.qianyewang.com:8090/pages/viewpage.action?pageId=21010872
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "超全的活动策划知识与上百个经典案例学习，链接: https://pan.baidu.com/s/1pAkh1D5ZS1YtIEPAKQuj7g 密码：wa4h \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '0722') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "互联网企业线上活动案例集合分析，链接: https://pan.baidu.com/s/1NRH6bJjydMx2WsgjYcaEPw 密码：bme4 \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '0721' || $msg->Content == '0618') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "上百套创意高端ppt合集，赶紧MARK，链接: https://pan.baidu.com/s/1YNW1uYtzxsU-ZWTqmOnZ7Q 密码：el2l \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == 'H5') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "六大好用的H5页面制作工具：https://mp.weixin.qq.com/s/c9JmCHAkRx8WYiT6zlKi8A \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '0101') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "当下有趣好玩的八大兼职：https://mp.weixin.qq.com/s/Pgt3mmJLzFiOlEeecdGgIg \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '0202') {
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "10套简历模板 链接: https://pan.baidu.com/s/1_SmFE0MNgQEpTyhpSw9PRA 密码: s25f \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.xingluo.party'>立即体验活动聚App</a>");
-        } elseif ($msg->Content == '路口'){
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "14天零基础公众号速成课+工具使用福利 \n\n链接: https://pan.baidu.com/s/1rW20Z7oucMcO0mDn2Ify8w 密码: x2k9 \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，立即体验活动聚App。");
-        } elseif ($msg->Content == '人物'){
-            $this->send(self::MESSAGE_TEXT, $msg->FromUserName, "<a href='https://mp.weixin.qq.com/s?__biz=MzI2ODU0NDI2OA==&mid=100001655&idx=1&sn=a048a24022d6a0b192a2123456ec9e76&chksm=6aecb7145d9b3e02b2dd83fc4f84b6eb200ef668644b27b34d818c07f6e4bf910fd072cdea3d'>有趣的灵魂都在这里，一起来捕获！</a> \n\n在【我的活动聚】—【发现活动】页面，发现更多创意趣味活动；\n下载活动聚APP，轻松发布和管理活动，立即体验活动聚App。");
-        } else {
-            $this->autoReplyByAdmin($msg);
-        }
+        $this->autoReplyByAdmin($msg);
 
-
-    }
-
-    /**
-     * 自动回复 (后台配置)
-     */
-    public function autoReplyByAdmin($msg){
-        $key = trim(strval($msg->Content));
-
-        $where = ['key' => $key, 'active' => 1, 'source' => 'hdj'];
-        $wechatAutoReplyModel = new \Hdjadmin\Model\WechatAutoReplyModel();
-        $res = $wechatAutoReplyModel->baseGet($where, '*', ['order' => 'asc']);
-        if($res){
-            foreach ($res as $oneReply) {
-                $type = $oneReply['type'];
-                $reply = $wechatAutoReplyModel->dealReplyByType($oneReply);
-                $this->send($type, $msg->FromUserName, $reply);
-            }
-        }
     }
 
     /**

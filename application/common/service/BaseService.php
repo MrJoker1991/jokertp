@@ -84,33 +84,28 @@ class BaseService
     }
 
     /**
-     * 设置redis值
-     * @param $redisKey
-     * @param $redisValue
-     * @param int $ttl
-     * @return bool
+     * 管理后台列表数据
      */
-    public function setRedisValue($redisKey, $redisValue, $ttl = 86400){
-        return \think\Cache::set($redisKey, $redisValue, $ttl);
-    }
+    public function genAdminSearchData($postData){
+        if (empty($postData['sidx']) || empty($postData['sord'])) {
+            $order = ['id' => 'desc'];
+        } else {
+            $order = [$postData['sidx'] => $postData['sord']];
+        }
 
-    /**
-     * 获取redis值
-     * @param $redisKey
-     * @return mixed
-     */
-    public function getRedisValue($redisKey){
-        return \think\Cache::get($redisKey);
-    }
+        $page = isset($postData['page']) ? empty($postData['page']) ? 1 : $postData['page'] : 1;
+        $rows = isset($postData['rows']) ? empty($postData['rows']) ? 20 : $postData['rows'] : 20;
 
-    /**
-     * 删除redis值
-     * @param $redisKey
-     * @return mixed
-     */
-    public function delRedisValue($redisKey){
-        return \think\Cache::rm($redisKey);
-    }
+        $filters = isset($postData['filters']) ? $postData['filters'] : '';
+        $filters = htmlspecialchars_decode($filters);
+        $filters = json_decode($filters, true);
 
+        return [
+            'page' => $page,
+            'rows' => $rows,
+            'order' => $order,
+            'filters' => $filters,
+        ];
+    }
 
 }
